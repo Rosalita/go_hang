@@ -6,16 +6,46 @@ import(
 )
 
 func main(){
+  again:= play_hangman()
+  for {
+    if again == "y"{
+      again = play_hangman()
+    } else if again == "n"{
+      break
+    }
+  }
+
+}
+
+func play_hangman()string{
   stage_of_death := 0
   has_guessed_1_letter := false
   guess :=""
   guessed_letters :=""
+  again :=""
   var dashes string
   var newdashes string
   word :="test" //to do make a long list of words and pick one at random.
   fmt.Printf("H A N G M A N\n")
   for {
       draw_hangman(stage_of_death)
+      if stage_of_death == 6{
+           fmt.Printf("Oh dear hangman is dead\n")
+           for{
+               fmt.Printf("Play again? (y/n) \n")
+               fmt.Scanln(&again)
+               isYorN, _ := regexp.MatchString("^y|Y|n|N",again)
+               if isYorN == false{
+                   fmt.Printf("You didn't type 'y' or 'n'! Try again\n")
+               } else if (len(again) > 1){
+                   fmt.Printf("You entered more than 1 character! Try again\n")
+               } else if strings.ToLower(again) == "y"{
+                   return "y"
+               } else if strings.ToLower(again) == "n"{
+                   return "n"
+               }
+           }
+      }
       if has_guessed_1_letter == false{
           dashes = hideword(len(word))
           fmt.Printf("%s\n",dashes)
@@ -43,7 +73,7 @@ func main(){
               updateddashes:= revealdashes(word,guess,newdashes)
               newdashes = updateddashes
           }
-          
+
           has_guessed_1_letter = true
       } else {
           fmt.Printf("The letter you guessed is not in the word\n")
