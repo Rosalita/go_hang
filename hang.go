@@ -14,7 +14,6 @@ func main(){
       break
     }
   }
-
 }
 
 func play_hangman()string{
@@ -23,8 +22,8 @@ func play_hangman()string{
   guess :=""
   guessed_letters :=""
   again :=""
-  var dashes string
-  var newdashes string
+  dashes :=""
+  newdashes:=""
   word :="test" //to do make a long list of words and pick one at random.
   fmt.Printf("H A N G M A N\n")
   for {
@@ -156,15 +155,15 @@ func draw_hangman(stage_of_death int){
     }
 }
 func hideword(wordlen int) string {
-    var dashes string
-    var i int
+    dashes:=""
+    i:=0
     for i = 0; i < wordlen; i++{
         dashes += "_"
     }
     return dashes
 }
 func revealdashes(word string, guess string, dashes string) string{
-    var newdashes string
+    newdashes:=""
     for i, r := range dashes {
         c := string(r)
         if c != "_"{
