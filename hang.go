@@ -6,19 +6,27 @@ import(
 )
 
 func main(){
-  again:= play_hangman()
+  score:=0
+  again, has_won:= play_hangman()
   for {
+    if has_won == true{
+      score ++
+      fmt.Printf("You have now won %d games",score)
+    }
+
     if again == "y"{
-      again = play_hangman()
+      again, has_won = play_hangman()
     } else if again == "n"{
       break
     }
+
   }
 }
 
-func play_hangman()string{
-  stage_of_death := 0
-  has_guessed_1_letter := false
+func play_hangman()(playagain string, is_winner bool){
+  stage_of_death :=0
+  has_guessed_1_letter :=false
+  has_won :=false
   guess :=""
   guessed_letters :=""
   again :=""
@@ -39,9 +47,9 @@ func play_hangman()string{
                } else if (len(again) > 1){
                    fmt.Printf("You entered more than 1 character! Try again\n")
                } else if strings.ToLower(again) == "y"{
-                   return "y"
+                   return "y", false
                } else if strings.ToLower(again) == "n"{
-                   return "n"
+                   return "n", false
                }
            }
       }
@@ -72,8 +80,15 @@ func play_hangman()string{
               updateddashes:= revealdashes(word,guess,newdashes)
               newdashes = updateddashes
           }
-
           has_guessed_1_letter = true
+          if newdashes == word{
+            has_won = true
+          }
+          if has_won == true{
+            fmt.Printf("C O N G R A T U L A T I O N S\n")
+            fmt.Printf("You won the game!\n")
+            return
+          }
       } else {
           fmt.Printf("The letter you guessed is not in the word\n")
           stage_of_death ++
@@ -179,4 +194,11 @@ func revealdashes(word string, guess string, dashes string) string{
         }
     }
     return newdashes
+}
+
+func check_if_winner(newdashes string,word string)bool{
+  if newdashes == word {
+    return true
+  }
+  return false
 }
