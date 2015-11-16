@@ -171,8 +171,7 @@ func draw_hangman(stage_of_death int){
 }
 func hideword(wordlen int) string {
     dashes:=""
-    i:=0
-    for i = 0; i < wordlen; i++{
+    for i := 0; i < wordlen; i++{
         dashes += "_"
     }
     return dashes
@@ -180,8 +179,7 @@ func hideword(wordlen int) string {
 func revealdashes(word string, guess string, dashes string) string{
     newdashes:=""
     for i, r := range dashes {
-        c := string(r)
-        if c != "_"{
+        if c:= string(r); c != "_"{
             newdashes += c
 
         } else {
