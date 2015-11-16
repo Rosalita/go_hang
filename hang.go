@@ -5,6 +5,7 @@ import(
   "regexp"
   "math/rand"
   "time"
+  "io/ioutil"
 )
 func init(){
     rand.Seed(time.Now().UnixNano())
@@ -243,10 +244,17 @@ func check_if_winner(newdashes string,word string)bool{
 func random_word()string{
   randnum:=rand.Intn(4)
 
-  switch randnum {
-  case 0: return "fish"
-  case 1: return "hair"
-  case 2: return "test"
-  default: return "hugs"
-  }
+
+  words_4_letters, err := ioutil.ReadFile("4letterwords.txt")
+      if err != nil{
+        panic(err)
+      }
+      fmt.Print(string(words_4_letters))
+
+      switch randnum {
+      case 0: return "fish"
+      case 1: return "hair"
+      case 2: return "test"
+      default: return "hugs"
+      }
 }
