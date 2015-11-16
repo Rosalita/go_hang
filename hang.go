@@ -48,7 +48,7 @@ func play_hangman()(playagain string, is_winner bool){
                    fmt.Printf("You entered more than 1 character! Try again\n")
                } else if strings.ToLower(again) == "y"{
                    return "y", false
-               } else if strings.ToLower(again) == "n"{
+               } else {
                    return "n", false
                }
            }
