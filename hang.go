@@ -41,7 +41,12 @@ func play_hangman()(playagain string, is_winner bool){
            for{
                fmt.Printf("Play again? (y/n) \n")
                fmt.Scanln(&again)
-               isYorN, _ := regexp.MatchString("^y|Y|n|N",again)
+               isYorN, somekindoferror := regexp.MatchString("^y|Y|n|N",again)
+                   if somekindoferror!= nil{
+                     fmt.Printf("Something has gone horribly wrong. ")
+                     fmt.Printf("exiting with error can not regex match %v", again)
+                     return
+                   }
                if isYorN == false{
                    fmt.Printf("You didn't type 'y' or 'n'! Try again\n")
                } else if (len(again) > 1){
@@ -62,7 +67,13 @@ func play_hangman()(playagain string, is_winner bool){
       fmt.Printf("Guess a letter: ")
       fmt.Scanln(&guess)
 
-      isALetter, _ := regexp.MatchString("^[a-zA-Z]",guess)
+      isALetter, somekindoferror := regexp.MatchString("^[a-zA-Z]",guess)
+      if somekindoferror!= nil{
+        fmt.Printf("Something has gone horribly wrong. ")
+        fmt.Printf("exiting with error can not regex match %v", again)
+        return
+      }
+
       if isALetter == false{
           fmt.Printf("That's not a letter! Try again\n")
       } else if (len(guess) > 1){
