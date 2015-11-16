@@ -6,15 +6,20 @@ import(
 )
 
 func main(){
-  score:=0
+  wins:=0
+  loses:=0
   again, has_won:= play_hangman()
   for {
     if has_won == true{
-      score ++
-      fmt.Printf("You have now won %d games",score)
+      wins ++
+    } else {
+      loses ++
     }
-
     if again == "y"{
+      fmt.Printf("------------------------\n")
+      fmt.Printf("    Current Score\n")
+      fmt.Printf("  %d: wins, %d: loses\n",wins, loses)
+      fmt.Printf("------------------------\n")
       again, has_won = play_hangman()
     } else if again == "n"{
       break
@@ -70,7 +75,7 @@ func play_hangman()(playagain string, is_winner bool){
       isALetter, somekindoferror := regexp.MatchString("^[a-zA-Z]",guess)
       if somekindoferror!= nil{
         fmt.Printf("Something has gone horribly wrong. ")
-        fmt.Printf("exiting with error can not regex match %v", again)
+        fmt.Printf("exiting with error can not regex match %v", guess)
         return
       }
 
@@ -98,7 +103,25 @@ func play_hangman()(playagain string, is_winner bool){
           if has_won == true{
             fmt.Printf("C O N G R A T U L A T I O N S\n")
             fmt.Printf("You won the game!\n")
-            return
+            for{
+                fmt.Printf("Play again? (y/n) \n")
+                fmt.Scanln(&again)
+                isYorN, somekindoferror := regexp.MatchString("^y|Y|n|N",again)
+                    if somekindoferror!= nil{
+                      fmt.Printf("Something has gone horribly wrong. ")
+                      fmt.Printf("exiting with error can not regex match %v", again)
+                      return
+                    }
+                if isYorN == false{
+                    fmt.Printf("You didn't type 'y' or 'n'! Try again\n")
+                } else if (len(again) > 1){
+                    fmt.Printf("You entered more than 1 character! Try again\n")
+                } else if strings.ToLower(again) == "y"{
+                    return "y", true
+                } else {
+                    return "n", true
+                }
+            }
           }
       } else {
           fmt.Printf("The letter you guessed is not in the word\n")
