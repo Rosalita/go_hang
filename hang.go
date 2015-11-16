@@ -3,7 +3,12 @@ import(
   "fmt"
   "strings"
   "regexp"
+  "math/rand"
+  "time"
 )
+func init(){
+    rand.Seed(time.Now().UnixNano())
+}
 
 func main(){
   wins:=0
@@ -37,7 +42,7 @@ func play_hangman()(playagain string, is_winner bool){
   again :=""
   dashes :=""
   newdashes:=""
-  word :="test" //to do make a long list of words and pick one at random.
+  word := random_word()
   fmt.Printf("H A N G M A N\n")
   for {
       draw_hangman(stage_of_death)
@@ -101,8 +106,8 @@ func play_hangman()(playagain string, is_winner bool){
             has_won = true
           }
           if has_won == true{
-            fmt.Printf("C O N G R A T U L A T I O N S\n")
-            fmt.Printf("You won the game!\n")
+            fmt.Printf("-= C O N G R A T U L A T I O N S =-\n")
+            fmt.Printf("You won the game! The word was %s\n", word)
             for{
                 fmt.Printf("Play again? (y/n) \n")
                 fmt.Scanln(&again)
@@ -233,4 +238,15 @@ func check_if_winner(newdashes string,word string)bool{
     return true
   }
   return false
+}
+
+func random_word()string{
+  randnum:=rand.Intn(4)
+
+  switch randnum {
+  case 0: return "fish"
+  case 1: return "hair"
+  case 2: return "test"
+  default: return "hugs"
+  }
 }
