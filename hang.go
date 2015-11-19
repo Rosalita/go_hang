@@ -49,6 +49,7 @@ func play_hangman()(playagain string, is_winner bool){
       draw_hangman(stage_of_death)
       if stage_of_death == 6{
            fmt.Printf("Oh dear hangman is dead\n")
+           fmt.Printf("The word that could have saved him was %s\n", word)
            for{
                fmt.Printf("Play again? (y/n) \n")
                fmt.Scanln(&again)
@@ -250,6 +251,5 @@ func random_word()string{
      somewords:= strings.Split(datastr4l, " ")
      randnum:=rand.Intn(len(somewords)-1)
      chosenword:= somewords[randnum]
-     fmt.Printf("a random word is: %s", chosenword)
      return chosenword
 }
