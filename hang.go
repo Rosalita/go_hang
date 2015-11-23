@@ -14,19 +14,27 @@ func init(){
 func main(){
   wins:=0
   loses:=0
-  again, has_won:= play_hangman()
+  numletters := 5
+  again, has_won:= play_hangman(numletters)
   for {
     if has_won == true{
       wins ++
+      if numletters > 4 {
+        numletters --
+      }
+
     } else {
       loses ++
+      if numletters < 5 {
+        numletters ++
+      }
     }
     if again == "y"{
       fmt.Printf("------------------------\n")
       fmt.Printf("    Current Score\n")
       fmt.Printf("  %d: wins, %d: loses\n",wins, loses)
       fmt.Printf("------------------------\n")
-      again, has_won = play_hangman()
+      again, has_won = play_hangman(numletters)
     } else if again == "n"{
       break
     }
@@ -34,7 +42,7 @@ func main(){
   }
 }
 
-func play_hangman()(playagain string, is_winner bool){
+func play_hangman(numletters int)(playagain string, is_winner bool,){
   stage_of_death :=0
   has_guessed_1_letter :=false
   has_won :=false
@@ -43,7 +51,7 @@ func play_hangman()(playagain string, is_winner bool){
   again :=""
   dashes :=""
   newdashes:=""
-  word := random_word()
+  word := random_word(numletters)
   fmt.Printf("H A N G M A N\n")
   for {
       draw_hangman(stage_of_death)
@@ -242,14 +250,22 @@ func check_if_winner(newdashes string,word string)bool{
   return false
 }
 
-func random_word()string{
-    data4l, err := ioutil.ReadFile("4letterwords.txt")
+func random_word(numletters int)string{
+        var dataletters []byte
+        var err error
+        if numletters == 4{
+            dataletters, err = ioutil.ReadFile("4letterwords.txt")
+        } else if numletters == 5 {
+            dataletters, err = ioutil.ReadFile("5letterwords.txt")
+        }
+
         if err != nil{
             panic(err)
         }
-     datastr4l:= string(data4l)
-     somewords:= strings.Split(datastr4l, " ")
-     randnum:=rand.Intn(len(somewords)-1)
-     chosenword:= somewords[randnum]
-     return chosenword
+        datastr:= string(dataletters)
+        somewords:= strings.Split(datastr, " ")
+        randnum:=rand.Intn(len(somewords)-1)
+        chosenword:= somewords[randnum]
+        return chosenword
+
 }
