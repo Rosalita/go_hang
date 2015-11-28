@@ -254,11 +254,11 @@ func random_word(numletters int)string{
         var dataletters []byte
         var err error
         if numletters == 4{
-            dataletters, err = ioutil.ReadFile("4letterwords.txt")
+            dataletters, err = ioutil.ReadFile("words/common4letters.txt")
         } else if numletters == 5 {
-            dataletters, err = ioutil.ReadFile("5letterwords.txt")
+            dataletters, err = ioutil.ReadFile("words/common5letters.txt")
         } else if numletters == 6 {
-          dataletters, err = ioutil.ReadFile("6letterwords.txt")
+          dataletters, err = ioutil.ReadFile("words/common6letters.txt")
         }
 
         if err != nil{
