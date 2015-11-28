@@ -14,7 +14,7 @@ func init(){
 func main(){
   wins:=0
   loses:=0
-  numletters := 5
+  numletters := 6
   again, has_won:= play_hangman(numletters)
   for {
     if has_won == true{
@@ -25,7 +25,7 @@ func main(){
 
     } else {
       loses ++
-      if numletters < 5 {
+      if numletters < 6 {
         numletters ++
       }
     }
@@ -257,6 +257,8 @@ func random_word(numletters int)string{
             dataletters, err = ioutil.ReadFile("4letterwords.txt")
         } else if numletters == 5 {
             dataletters, err = ioutil.ReadFile("5letterwords.txt")
+        } else if numletters == 6 {
+          dataletters, err = ioutil.ReadFile("6letterwords.txt")
         }
 
         if err != nil{
@@ -265,6 +267,7 @@ func random_word(numletters int)string{
         datastr:= string(dataletters)
         somewords:= strings.Split(datastr, " ")
         randnum:=rand.Intn(len(somewords)-1)
+
         chosenword:= somewords[randnum]
         return chosenword
 
