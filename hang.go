@@ -44,6 +44,7 @@ func main(){
 
 func play_hangman(numletters int)(playagain string, is_winner bool,){
   stage_of_death :=0
+  gamemode:= 0
   has_guessed_1_letter :=false
   has_won :=false
   guess :=""
@@ -53,6 +54,14 @@ func play_hangman(numletters int)(playagain string, is_winner bool,){
   newdashes:=""
   word := random_word(numletters)
   fmt.Printf("H A N G M A N\n")
+  for {
+      fmt.Println("Select game mode:")
+      fmt.Println("1. Only use Common words (easy)")
+      fmt.Println("2. Use all words (hard)")
+      fmt.Scanln(&gamemode)
+      break
+
+  }
   for {
       draw_hangman(stage_of_death)
       if stage_of_death == 6{
@@ -254,11 +263,11 @@ func random_word(numletters int)string{
         var dataletters []byte
         var err error
         if numletters == 4{
-            dataletters, err = ioutil.ReadFile("words/common4letters.txt")
+            dataletters, err = ioutil.ReadFile("words/common4l.txt")
         } else if numletters == 5 {
-            dataletters, err = ioutil.ReadFile("words/common5letters.txt")
+            dataletters, err = ioutil.ReadFile("words/common5l.txt")
         } else if numletters == 6 {
-          dataletters, err = ioutil.ReadFile("words/common6letters.txt")
+          dataletters, err = ioutil.ReadFile("words/common6l.txt")
         }
 
         if err != nil{
