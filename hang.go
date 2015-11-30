@@ -14,20 +14,15 @@ func init(){
 func main(){
   wins:=0
   loses:=0
-  numletters := 6
+  numletters:=rand.Intn(11) + 4 //generates random number from 4 to 15
   again, has_won:= play_hangman(numletters)
   for {
     if has_won == true{
       wins ++
-      if numletters > 4 {
-        numletters --
-      }
-
+      numletters = rand.Intn(11) + 4 //generates random number from 4 to 15
     } else {
       loses ++
-      if numletters < 6 {
-        numletters ++
-      }
+      numletters = rand.Intn(11) + 4 //generates random number from 4 to 15
     }
     if again == "y"{
       fmt.Printf("------------------------\n")
@@ -38,7 +33,6 @@ func main(){
     } else if again == "n"{
       break
     }
-
   }
 }
 
@@ -52,16 +46,19 @@ func play_hangman(numletters int)(playagain string, is_winner bool,){
   again :=""
   dashes :=""
   newdashes:=""
-  word := random_word(numletters)
   fmt.Printf("H A N G M A N\n")
   for {
       fmt.Println("Select game mode:")
-      fmt.Println("1. Only use Common words (easy)")
-      fmt.Println("2. Use all words (hard)")
+      fmt.Println("1. Only use Common words (easy mode)")
+      fmt.Println("2. Use all words (hard mode)")
       fmt.Scanln(&gamemode)
-      break
-
+      if (gamemode == 1)||(gamemode == 2){
+        break
+      } else {
+        fmt.Println("Please type 1 or 2")
+      }
   }
+  word := random_word(numletters, gamemode)
   for {
       draw_hangman(stage_of_death)
       if stage_of_death == 6{
@@ -259,25 +256,67 @@ func check_if_winner(newdashes string,word string)bool{
   return false
 }
 
-func random_word(numletters int)string{
-        var dataletters []byte
-        var err error
-        if numletters == 4{
-            dataletters, err = ioutil.ReadFile("words/common4l.txt")
-        } else if numletters == 5 {
-            dataletters, err = ioutil.ReadFile("words/common5l.txt")
-        } else if numletters == 6 {
-          dataletters, err = ioutil.ReadFile("words/common6l.txt")
+func random_word(numletters int, gamemode int)string{
+        switch gamemode{
+        case 1:
+           var dataletters []byte
+           var err error
+           if numletters == 4{
+               dataletters, err = ioutil.ReadFile("words/common4l.txt")
+           } else if numletters == 5 {
+               dataletters, err = ioutil.ReadFile("words/common5l.txt")
+           } else if numletters >= 6 {
+               dataletters, err = ioutil.ReadFile("words/common6l.txt")
+           }
+
+           if err != nil{
+               panic(err)
+           }
+           datastr:= string(dataletters)
+           somewords:= strings.Split(datastr, " ")
+           randnum:=rand.Intn(len(somewords)-1)
+           chosenword:= somewords[randnum]
+           return chosenword
+
+        case 2:
+          var dataletters []byte
+          var err error
+          if numletters == 4{
+              dataletters, err = ioutil.ReadFile("words/all4l.txt")
+          } else if numletters == 5 {
+              dataletters, err = ioutil.ReadFile("words/all5l.txt")
+          } else if numletters == 6 {
+              dataletters, err = ioutil.ReadFile("words/all6l.txt")
+          } else if numletters == 7 {
+              dataletters, err = ioutil.ReadFile("words/all7l.txt")
+          } else if numletters == 8 {
+              dataletters, err = ioutil.ReadFile("words/all8l.txt")
+          } else if numletters == 9 {
+              dataletters, err = ioutil.ReadFile("words/all9l.txt")
+          } else if numletters == 10 {
+              dataletters, err = ioutil.ReadFile("words/all10l.txt")
+          } else if numletters == 11 {
+              dataletters, err = ioutil.ReadFile("words/all11l.txt")
+          } else if numletters == 12 {
+              dataletters, err = ioutil.ReadFile("words/all12l.txt")
+          } else if numletters == 13 {
+              dataletters, err = ioutil.ReadFile("words/all13l.txt")
+          } else if numletters == 14 {
+              dataletters, err = ioutil.ReadFile("words/all14l.txt")
+          } else if numletters == 15 {
+              dataletters, err = ioutil.ReadFile("words/all15l.txt")
+          }
+
+          if err != nil{
+              panic(err)
+          }
+          datastr:= string(dataletters)
+          somewords:= strings.Split(datastr, " ")
+          randnum:=rand.Intn(len(somewords)-1)
+          chosenword:= somewords[randnum]
+          return chosenword
+
         }
 
-        if err != nil{
-            panic(err)
-        }
-        datastr:= string(dataletters)
-        somewords:= strings.Split(datastr, " ")
-        randnum:=rand.Intn(len(somewords)-1)
-
-        chosenword:= somewords[randnum]
-        return chosenword
-
+return "omgthisisabugyoushouldntseethisever"
 }
