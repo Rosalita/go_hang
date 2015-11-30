@@ -6,6 +6,9 @@ import(
   "math/rand"
   "time"
   "io/ioutil"
+  "os"
+  "os/exec"
+  "runtime"
 )
 func init(){
     rand.Seed(time.Now().UnixNano())
@@ -25,6 +28,7 @@ func main(){
       numletters = rand.Intn(11) + 4 //generates random number from 4 to 15
     }
     if again == "y"{
+      clearscreen()
       fmt.Printf("------------------------\n")
       fmt.Printf("    Current Score\n")
       fmt.Printf("  %d: wins, %d: loses\n",wins, loses)
@@ -53,6 +57,7 @@ func play_hangman(numletters int)(playagain string, is_winner bool,){
       fmt.Println("2. Use all words (hard mode)")
       fmt.Scanln(&gamemode)
       if (gamemode == 1)||(gamemode == 2){
+        clearscreen()
         break
       } else {
         fmt.Println("Please type 1 or 2")
@@ -60,6 +65,7 @@ func play_hangman(numletters int)(playagain string, is_winner bool,){
   }
   word := random_word(numletters, gamemode)
   for {
+
       draw_hangman(stage_of_death)
       if stage_of_death == 9{
            fmt.Printf("Oh dear hangman is dead\n")
@@ -82,6 +88,7 @@ func play_hangman(numletters int)(playagain string, is_winner bool,){
                } else {
                    return "n", false
                }
+
            }
       }
       if has_guessed_1_letter == false{
@@ -95,18 +102,23 @@ func play_hangman(numletters int)(playagain string, is_winner bool,){
 
       isALetter, somekindoferror := regexp.MatchString("^[a-zA-Z]",guess)
       if somekindoferror!= nil{
+        clearscreen()
         fmt.Printf("Something has gone horribly wrong. ")
         fmt.Printf("exiting with error can not regex match %v", guess)
         return
       }
 
       if isALetter == false{
+          clearscreen()
           fmt.Printf("That's not a letter! Try again\n")
       } else if (len(guess) > 1){
+          clearscreen()
           fmt.Printf("You entered more than 1 character! Try again\n")
       } else if strings.Contains(guessed_letters, guess){
+          clearscreen()
           fmt.Printf("You have already guessed that letter! Try again\n")
       } else if strings.Contains(word, guess){
+          clearscreen()
           fmt.Printf("The letter you guessed is in the word\n")
           guessed_letters += guess
 
@@ -122,6 +134,7 @@ func play_hangman(numletters int)(playagain string, is_winner bool,){
             has_won = true
           }
           if has_won == true{
+            clearscreen()
             fmt.Printf("-= C O N G R A T U L A T I O N S =-\n")
             fmt.Printf("You won the game! The word was %s\n", word)
             for{
@@ -145,6 +158,7 @@ func play_hangman(numletters int)(playagain string, is_winner bool,){
             }
           }
       } else {
+          clearscreen()
           fmt.Printf("The letter you guessed is not in the word\n")
           stage_of_death ++
           guessed_letters += guess
@@ -359,4 +373,17 @@ func random_word(numletters int, gamemode int)string{
         }
 
 return "omgthisisabugyoushouldntseethisever"
+}
+
+func clearscreen() {
+    //fmt.Printf("current OS is: %v", runtime.GOOS)
+    if (runtime.GOOS != "windows"){
+        cmd:= exec.Command("clear")
+        cmd.Stdout = os.Stdout
+        cmd.Run()
+    } else {
+        cmd:= exec.Command("cls")
+        cmd.Stdout = os.Stdout
+        cmd.Run()
+    }
 }
