@@ -376,13 +376,12 @@ return "omgthisisabugyoushouldntseethisever"
 }
 
 func clearscreen() {
-    //fmt.Printf("current OS is: %v", runtime.GOOS)
     if (runtime.GOOS != "windows"){
         cmd:= exec.Command("clear")
         cmd.Stdout = os.Stdout
         cmd.Run()
     } else {
-        cmd:= exec.Command("cls")
+        cmd:= exec.Command("cmd", "/c", "cls")
         cmd.Stdout = os.Stdout
         cmd.Run()
     }
